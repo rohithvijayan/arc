@@ -91,6 +91,8 @@
   height: 100vh;
   width:300px;
   color: white;
-  background-color:  rgba(17, 17, 17, 0.671);  
-  backdrop-filter: blur(5px);
+  background:
+    linear-gradient(to right, rgb(115, 115, 216), rgb(87, 87, 232) ),
+    url(https://grainy-gradients.vercel.app/noise.svg);
 }
+
