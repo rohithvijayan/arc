@@ -82,7 +82,6 @@
   color: azure;
   display: flex;
   font-family: 'TheGoodMonolith';
-  z-index: 110;
   padding-bottom:3px;
 }
 .nav{

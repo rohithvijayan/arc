@@ -10,7 +10,10 @@ const createWindow = () => {
     width: 1100,
     height: 800,
     autoHideMenuBar:true,
+    webViewTag:true,
     webPreferences: {
+      webviewTag:true,
+      nodeIntegration:true,
       preload: path.join(__dirname, "preload.js"),
     },
   });
