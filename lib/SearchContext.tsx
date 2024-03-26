@@ -9,7 +9,7 @@ export const SearchBarContext = createContext<SearchContextInterface | null>(
 );
 
 export const SearchBarProvider = ({children,}: Readonly<{children: React.ReactNode;}>) => {
-  const [searchUrl, setSearchUrl] = useState("https://google.com");
+  const [searchUrl, setSearchUrl] = useState("browse.me");
 
   const searchValue: SearchContextInterface = {
     searchUrl,

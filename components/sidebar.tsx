@@ -13,9 +13,10 @@ import {
 import { FaInstagram, FaSpotify, FaYoutube } from "react-icons/fa";
 import { SiGmail } from "react-icons/si";
 import { Card, CardHeader } from "./ui/card";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { SearchBarContext, SearchContextInterface } from "@/lib/SearchContext";
+import { validUrl } from "@/lib/validUrl";
 export default function Sidebar() {
   interface Tabs {
     name: string;
@@ -39,6 +40,10 @@ export default function Sidebar() {
   const { searchUrl, setSearchUrl } = useContext(
     SearchBarContext
   ) as SearchContextInterface;
+  const [sideBarSearch,setSideBarSearch] =useState(searchUrl);
+  useEffect(()=>{
+    setSideBarSearch(searchUrl);
+  },[searchUrl])
   return (
     <header className="header">
       <nav className="nav justify-between">
@@ -69,29 +74,32 @@ export default function Sidebar() {
             <Input
               type="text"
               className="bg-slate-400 rounded-lg border-2 focus:border-slate-500 "
-              value={searchUrl}
+              value={sideBarSearch}
               onChange={(input) => {
-                setSearchUrl(input.target.value);
+                setSideBarSearch(input.target.value);
               }}
               onKeyUp={(event) => {
-                if (event.key == "Enter")
+                if (event.key == "Enter"){
+                  validUrl(sideBarSearch)==true ? setSearchUrl(sideBarSearch) : setSearchUrl(`https://google.com/search?q=${sideBarSearch}`);
                   console.log("make context", searchUrl);
+                }
               }}
             />
             <div className="flex flex-row gap-1">
               {[
-                <FaInstagram size={20} />,
-                <SiGmail size={20} />,
-                <FaYoutube size={20} />,
-                <FaSpotify size={20} />,
+                {icon:<FaInstagram size={20} />,url:'https://instagram.com'},
+                {icon:<SiGmail size={20} />,url:'https://gmail.com'},
+                {icon:<FaYoutube size={20} />,url:'https://youtube.com'},
+                {icon:<FaSpotify size={20} />,url:'https://open.spotify.com'}
               ].map((bookmark, index) => {
                 return (
                   <Card
-                    className="h-[55px] w-[55px] m-1 justify-items-center bg-slate-400 text-white border-transparent"
+                    className="h-[55px] w-[55px] m-1 justify-items-center bg-slate-400 text-white border-transparent cursor-pointer"
                     key={index}
+                    onClick={()=>setSearchUrl(bookmark.url)}
                   >
                     <CardHeader className="h-[53px] w-[53px] rounded-lg text-center p-4 backdrop-blur-[30px]">
-                      {bookmark}
+                      {bookmark.icon}
                     </CardHeader>
                   </Card>
                 );
