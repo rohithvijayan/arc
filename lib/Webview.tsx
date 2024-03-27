@@ -1,11 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { WebviewTag } from "electron";
+import { SearchBarContext, SearchContextInterface } from "./SearchContext";
 interface UrlProp{
     src:string;
 }
 const WebView = ({src}:UrlProp)=>{
-    const webviewRef = useRef<WebviewTag>(null);
-    
+    const {webviewRef} = useContext(SearchBarContext) as SearchContextInterface;
     return <webview src={src} ref={webviewRef}  
     allowpopups
     nodeintegration

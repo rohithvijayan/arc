@@ -37,7 +37,7 @@ export default function Sidebar() {
     ]);
     setTabID(newTabID);
   };
-  const { searchUrl, setSearchUrl } = useContext(
+  const { searchUrl, setSearchUrl,webviewRef } = useContext(
     SearchBarContext
   ) as SearchContextInterface;
   const [sideBarSearch,setSideBarSearch] =useState(searchUrl);
@@ -59,13 +59,13 @@ export default function Sidebar() {
               >
                 <PlusIcon />
               </Button>
-              <Button variant="ghost">
+              <Button variant="ghost" onClick={()=>{webviewRef.current?.goBack()}}>
                 <ArrowLeftIcon />
               </Button>
-              <Button variant="ghost">
+              <Button variant="ghost" onClick={()=>{webviewRef.current?.goForward()}}>
                 <ArrowRightIcon />
               </Button>
-              <Button variant="ghost">
+              <Button variant="ghost" onClick={()=>{webviewRef.current?.reload()}}>
                 <ReloadIcon />
               </Button>
             </div>
