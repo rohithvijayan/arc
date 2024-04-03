@@ -24,6 +24,9 @@ const createWindow = () => {
     });
   } else {
     win.loadURL("http://localhost:3000");
+    win.webContents.on("hung",(e,code,desc)=>{
+      console.log(e);
+    })
     win.webContents.on("did-fail-load", (e, code, desc) => {
       win.webContents.reloadIgnoringCache();
     });

@@ -5,7 +5,8 @@ import { SearchBarContext, SearchContextInterface } from "@/lib/SearchContext";
 import WebView from "@/lib/Webview";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 import { useContext, useEffect, useState } from "react";
-
+import { validUrl } from "@/lib/validUrl";
+import { santizeUrl } from "@/lib/santizeUrl";
 export default function Home() {
   const [browseMe,setBrowseMe] = useState<string>("");
   const { searchUrl,setSearchUrl } = useContext(SearchBarContext) as SearchContextInterface;
@@ -17,7 +18,7 @@ export default function Home() {
             <Input type="text"  onChange={(input)=>{
               setBrowseMe(input.target.value);
             }} placeholder="Browse for me... !" />
-            <Button className="gap-1 " onClick={()=>{browseMe!="" && setSearchUrl(browseMe)}}>
+            <Button className="gap-1 " onClick={()=>{browseMe!="" && validUrl(browseMe)==true ? setSearchUrl(santizeUrl(browseMe)) : setSearchUrl(`https://google.com/search?q=${browseMe}`);}}>
               search
               <ArrowRightIcon />
             </Button>

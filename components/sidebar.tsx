@@ -17,6 +17,7 @@ import { useContext, useEffect, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { SearchBarContext, SearchContextInterface } from "@/lib/SearchContext";
 import { validUrl } from "@/lib/validUrl";
+import {santizeUrl} from '@/lib/santizeUrl'
 export default function Sidebar() {
   interface Tabs {
     name: string;
@@ -80,7 +81,7 @@ export default function Sidebar() {
               }}
               onKeyUp={(event) => {
                 if (event.key == "Enter"){
-                  validUrl(sideBarSearch)==true ? setSearchUrl(sideBarSearch) : setSearchUrl(`https://google.com/search?q=${sideBarSearch}`);
+                  validUrl(sideBarSearch)==true ? setSearchUrl(santizeUrl(sideBarSearch)) : setSearchUrl(`https://google.com/search?q=${sideBarSearch}`);
                   console.log("make context", searchUrl);
                 }
               }}
