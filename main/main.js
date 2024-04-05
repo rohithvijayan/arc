@@ -1,6 +1,7 @@
 const { app, BrowserWindow,ipcMain } = require("electron");
 const serve = require("electron-serve");
 const path = require("path");
+
 const appServe = app.isPackaged ? serve({
   directory: path.join(__dirname, "../out")
 }) : null;
@@ -16,17 +17,15 @@ const createWindow = () => {
       nodeIntegration:true,
       preload: path.join(__dirname, "preload.js"),
     },
+    icon:__dirname+'../public/arc_logo.png'
   });
-
+  win.setIcon(path.join(process.cwd(),'/public/Arc.png'));
   if (app.isPackaged) {
     appServe(win).then(() => {
       win.loadURL("app://-");
     });
   } else {
     win.loadURL("http://localhost:3000");
-    win.webContents.on("hung",(e,code,desc)=>{
-      console.log(e);
-    })
     win.webContents.on("did-fail-load", (e, code, desc) => {
       win.webContents.reloadIgnoringCache();
     });

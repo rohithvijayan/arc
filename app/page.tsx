@@ -4,12 +4,13 @@ import { Input } from "@/components/ui/input";
 import { SearchBarContext, SearchContextInterface } from "@/lib/SearchContext";
 import WebView from "@/lib/Webview";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { validUrl } from "@/lib/validUrl";
 import { santizeUrl } from "@/lib/santizeUrl";
 export default function Home() {
   const [browseMe,setBrowseMe] = useState<string>("");
   const { searchUrl,setSearchUrl } = useContext(SearchBarContext) as SearchContextInterface;
+
   return (
     <div className="h-screen w-screen border-[#5757E8] border-8">
       <div className="justify-center items-center ml-[290px] h-full">
