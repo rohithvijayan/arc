@@ -20,7 +20,7 @@ export default function Spotlight() {
   const handleSpotLightRef = useRef<(event: KeyboardEvent) => void>();
   useEffect(() => {
     const handleSpotLight = (event: KeyboardEvent) => {
-      if ((event.metaKey || event.ctrlKey) && event.key === "k") {
+      if ((event.metaKey || event.ctrlKey) && event.key === "t") {
         event.preventDefault();
         setSpotlight((prevState) => !prevState);
       }

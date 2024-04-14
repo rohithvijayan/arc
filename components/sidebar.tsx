@@ -20,51 +20,59 @@ import { SearchBarContext, SearchContextInterface } from "@/lib/SearchContext";
 import { validUrl } from "@/lib/validUrl";
 import { santizeUrl } from "@/lib/santizeUrl";
 import Spotlight from "./spotlight";
-import Arc from '@/public/arc_logo.png'
+import Arc from "@/public/arc_logo.png";
 export default function Sidebar() {
   interface Tabs {
     name: string;
     url: string;
     presentId: number;
   }
-  const activeTabStyle = "h-[50px] bg-slate-500 border-slate-500";
-  const defaultTabStyle = "bg-transparent border-transparent";
-  const [tabObjs, setTabObjs] = useState<Tabs[]>([
-    { name: "new tab", url: "", presentId: 1 },
-  ]);
-  const [tabID, setTabID] = useState<number>(1);
-  const addTab = () => {
-    const newTabID = tabID + 1;
-    setTabObjs((prevTabObjs) => [
-      ...prevTabObjs,
-      { name: "new tab", url: "", presentId: newTabID },
-    ]);
-    setTabID(newTabID);
-  };
-  const modifyTab =()=>{
-    tabObjs.map((tab)=>{
-      if(tabID===tab.presentId){
-        tab.name=searchUrl;
-        tab.url=searchUrl;
-      }
-    })
-  }
   const { searchUrl, setSearchUrl, webviewRef } = useContext(
     SearchBarContext
   ) as SearchContextInterface;
   const [sideBarSearch, setSideBarSearch] = useState(searchUrl);
-  useEffect(() => {
-    setSideBarSearch(searchUrl);
-  }, [searchUrl]);
+  
+  const activeTabStyle = "h-[50px] bg-slate-500 border-slate-500";
+  const defaultTabStyle = "h-[50px] bg-transparent border-transparent";
+  const [tabObjs, setTabObjs] = useState<Tabs[]>([
+    { name: "browse.me", url: "browse.me", presentId: 1 },
+  ]);
+  const [tabID, setTabID] = useState<number>(1);
+  const addTab = () => {
+    var newTabID = tabID + 1;
+    setTabObjs((prevTabObjs) => [
+      ...prevTabObjs,
+      { name: "Browse.me", url: "browse.me", presentId: newTabID },
+    ]);
+    setTabID(newTabID);
+    setSideBarSearch("browse.me");
+  };
+  const modifyTab = () => {
+    console.log("modify",searchUrl);
+    setTabObjs((prevTabObjs) => {
+      const updatedTabs = prevTabObjs.map((tab) => {
+        if (tab.presentId === tabID) {
+          return { ...tab, name: searchUrl, url: searchUrl };
+        }
+        return tab;
+      });
+      
+      return updatedTabs;
+    });
+  };
+  useEffect(()=>{
+    modifyTab();
+  },[searchUrl])
+ 
   return (
     <header className="header">
       <nav className="nav justify-between">
         <div>
           <div className="p-[10px] flex flex-row gap-10 m-[5px]">
             {/* <h1 className="font-bold text-[20px]">ava</h1> */}
-            <img alt="Arc logo" src={Arc.src} className="h-6 w-6 mt-2"/>
+            <img alt="Arc logo" src={Arc.src} className="h-6 w-6 mt-2" />
             <div className="flex flex-row space-x-2">
-              <Spotlight/>
+              <Spotlight />
               <Button
                 variant="ghost"
                 onClick={() => {
@@ -115,7 +123,7 @@ export default function Sidebar() {
                         `https://google.com/search?q=${sideBarSearch}`
                       );
                   console.log("make context", searchUrl);
-                  modifyTab();
+                   
                 }
               }}
             />
@@ -148,26 +156,27 @@ export default function Sidebar() {
           </div>
           {tabObjs.map((tab) => {
             console.log(tabObjs);
-              return (
-                <div onClick={()=>{
-                  setTabID(tab.presentId)
-                  if(tab.url==="")
-                    setSearchUrl("browse.me");
-                  else 
-                    setSearchUrl(tab.url);
-                  }}>
+            return (
+              <div
+                onClick={() => {
+                  setTabID(tab.presentId);
+                  setSideBarSearch(tab.url);
+                  setSearchUrl(tab.url);
+                }}
+              >
                 <Card
-                  className={`m-3 justify-items-center text-white cursor:pointer ${(tab.presentId!=tabID)? defaultTabStyle :activeTabStyle}`}
+                  className={`m-3 justify-items-center text-white cursor:pointer ${
+                    tab.presentId != tabID ? defaultTabStyle : activeTabStyle
+                  }`}
                   key={tab.presentId}
-                  
                 >
                   <CardHeader className="rounded-lg flex flex-row gap-2 p-3 leading-3">
                     <FileIcon height={20} width={20} />
                     <h1 className="font-bold">{tab.name}</h1>
                   </CardHeader>
                 </Card>
-                </div>
-              );
+              </div>
+            );
           })}
         </div>
         <div className="flex flex-row justify-between m-5 ">
