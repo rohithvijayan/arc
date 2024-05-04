@@ -10,7 +10,6 @@ import {
   GearIcon,
   BlendingModeIcon,
 } from "@radix-ui/react-icons";
-
 import { FaInstagram, FaSpotify, FaYoutube } from "react-icons/fa";
 import { SiGmail } from "react-icons/si";
 import { Card, CardContent, CardHeader } from "./ui/card";
@@ -19,56 +18,58 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { SearchBarContext, SearchContextInterface } from "@/lib/SearchContext";
 import { validUrl } from "@/lib/validUrl";
 import { santizeUrl } from "@/lib/santizeUrl";
+import {fetchMeta} from '@/lib/fetchMeta';
 import Spotlight from "./spotlight";
 import Arc from "@/public/arc_logo.png";
+import { Tabs } from "@/lib/types";
+import {v4} from 'uuid';
+import TabComponent from "./tabs";
+import { ScrollArea } from "./ui/scroll-area";
 export default function Sidebar() {
-  interface Tabs {
-    name: string;
-    url: string;
-    presentId: number;
-  }
-  const { searchUrl, setSearchUrl, webviewRef } = useContext(
+
+  const { searchUrl, setSearchUrl, webviewRef,tabObjs,setTabObjs } = useContext(
     SearchBarContext
   ) as SearchContextInterface;
   const [sideBarSearch, setSideBarSearch] = useState(searchUrl);
-  
+
   const activeTabStyle = "h-[50px] bg-slate-500 border-slate-500";
   const defaultTabStyle = "h-[50px] bg-transparent border-transparent";
-  const [tabObjs, setTabObjs] = useState<Tabs[]>([
-    { name: "browse.me", url: "browse.me", presentId: 1 },
-  ]);
-  const [tabID, setTabID] = useState<number>(1);
+  // const [tabObjs, setTabObjs] = useState<Tabs[]>([
+  //   { name: "browse.me", url: "browse.me", presentId: "" },
+  // ]);
+  const [tabID, setTabID] = useState<string>("");
   const addTab = () => {
-    var newTabID = tabID + 1;
+    // var newTabID = tabID + 1;
+    var newTabID = v4();
     setTabObjs((prevTabObjs) => [
       ...prevTabObjs,
-      { name: "Browse.me", url: "browse.me", presentId: newTabID },
+      { name: "browse.me", url: "browse.me", presentId: newTabID },
     ]);
     setTabID(newTabID);
     setSideBarSearch("browse.me");
   };
   const modifyTab = () => {
-    console.log("modify",searchUrl);
+    console.log("modify", searchUrl);
     setTabObjs((prevTabObjs) => {
       const updatedTabs = prevTabObjs.map((tab) => {
         if (tab.presentId === tabID) {
-          return { ...tab, name: searchUrl, url: searchUrl };
+          return { ...tab, name:searchUrl , url: searchUrl };
         }
         return tab;
       });
-      
+
       return updatedTabs;
     });
   };
-  useEffect(()=>{
+  useEffect(() => {
     modifyTab();
-  },[searchUrl])
- 
+  }, [searchUrl]);
+  
   return (
     <header className="header">
       <nav className="nav justify-between">
         <div>
-          <div className="p-[10px] flex flex-row gap-10 m-[5px]">
+          <div className="p-[10px] flex flex-row justify-between m-[5px] gap-10">
             {/* <h1 className="font-bold text-[20px]">ava</h1> */}
             <img alt="Arc logo" src={Arc.src} className="h-6 w-6 mt-2" />
             <div className="flex flex-row space-x-2">
@@ -123,61 +124,53 @@ export default function Sidebar() {
                         `https://google.com/search?q=${sideBarSearch}`
                       );
                   console.log("make context", searchUrl);
-                   
                 }
               }}
             />
-            <div className="flex flex-row gap-1">
-              {[
-                {
-                  icon: <FaInstagram size={20} />,
-                  url: "https://instagram.com",
-                },
-                { icon: <SiGmail size={20} />, url: "https://gmail.com" },
-                { icon: <FaYoutube size={20} />, url: "https://youtube.com" },
-                {
-                  icon: <FaSpotify size={20} />,
-                  url: "https://open.spotify.com",
-                },
-              ].map((bookmark, index) => {
-                return (
-                  <Card
-                    className="h-[55px] w-[55px] m-1 justify-items-center bg-slate-400 text-white border-transparent cursor-pointer"
-                    key={index}
-                    onClick={() => setSearchUrl(bookmark.url)}
-                  >
-                    <CardHeader className="h-[53px] w-[53px] rounded-lg text-center p-4 backdrop-blur-[30px]">
-                      {bookmark.icon}
-                    </CardHeader>
-                  </Card>
-                );
-              })}
-            </div>
-          </div>
-          {tabObjs.map((tab) => {
-            console.log(tabObjs);
-            return (
-              <div
-                onClick={() => {
-                  setTabID(tab.presentId);
-                  setSideBarSearch(tab.url);
-                  setSearchUrl(tab.url);
-                }}
-              >
-                <Card
-                  className={`m-3 justify-items-center text-white cursor:pointer ${
-                    tab.presentId != tabID ? defaultTabStyle : activeTabStyle
-                  }`}
-                  key={tab.presentId}
-                >
-                  <CardHeader className="rounded-lg flex flex-row gap-2 p-3 leading-3">
-                    <FileIcon height={20} width={20} />
-                    <h1 className="font-bold">{tab.name}</h1>
-                  </CardHeader>
-                </Card>
+              <div className="flex flex-row gap-1 handle">
+                {[
+                  {
+                    icon: <FaInstagram size={20} />,
+                    url: "https://instagram.com",
+                  },
+                  { icon: <SiGmail size={20} />, url: "https://gmail.com" },
+                  { icon: <FaYoutube size={20} />, url: "https://youtube.com" },
+                  {
+                    icon: <FaSpotify size={20} />,
+                    url: "https://open.spotify.com",
+                  },
+                ].map((bookmark, index) => {
+                  return (
+                    <Card
+                      className="h-[55px] w-[55px] m-1 justify-items-center bg-slate-400 text-white border-transparent cursor-pointer"
+                      key={index}
+                      onClick={() => setSearchUrl(bookmark.url)}
+                    >
+                      <CardHeader className="h-[53px] w-[53px] rounded-lg text-center p-4 backdrop-blur-[30px]">
+                        {bookmark.icon}
+                      </CardHeader>
+                    </Card>
+                  );
+                })}
               </div>
-            );
-          })}
+          </div>
+            <ScrollArea className="h-[500px]">
+            {tabObjs.map((tab) => {
+              
+              return ( 
+                <TabComponent 
+                  tab={tab} 
+                  tabID={tabID} 
+                  setTabID={setTabID}
+                  setSearchUrl={setSearchUrl}
+                  setSideBarSearch={setSideBarSearch}
+                  defaultTabStyle={defaultTabStyle}
+                  activeTabStyle={activeTabStyle}
+                />
+              );
+            })}
+            </ScrollArea>
+          
         </div>
         <div className="flex flex-row justify-between m-5 ">
           <Button variant={"link"}>
