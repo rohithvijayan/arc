@@ -7,10 +7,15 @@ import { ArrowRightIcon } from "@radix-ui/react-icons";
 import React, { useContext, useState } from "react";
 import { validUrl } from "@/lib/validUrl";
 import { santizeUrl } from "@/lib/santizeUrl";
+import useFetchSiteData from "@/lib/hooks/useFetchSiteData";
+
 export default function Home() {
   const [browseMe,setBrowseMe] = useState<string>("");
   const { searchUrl,setSearchUrl } = useContext(SearchBarContext) as SearchContextInterface;
-
+  
+  const handleSearchButton = ()=>{
+    browseMe!="" && validUrl(browseMe)==true ? setSearchUrl(santizeUrl(browseMe)) : setSearchUrl(`https://google.com/search?q=${browseMe}`);
+  }
   return (
     <div className="h-screen w-screen border-[#5757E8] border-8">
       <div className="justify-center items-center ml-[290px] h-full">
@@ -19,7 +24,7 @@ export default function Home() {
             <Input type="text"  onChange={(input)=>{
               setBrowseMe(input.target.value);
             }} placeholder="Browse for me... !" />
-            <Button className="gap-1 " onClick={()=>{browseMe!="" && validUrl(browseMe)==true ? setSearchUrl(santizeUrl(browseMe)) : setSearchUrl(`https://google.com/search?q=${browseMe}`);}}>
+            <Button className="gap-1 " onClick={handleSearchButton}>
               search
               <ArrowRightIcon />
             </Button>

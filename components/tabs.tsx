@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+"use client";
+import React, { useContext, useState,MutableRefObject } from "react";
+import {WebviewTag} from 'electron'
 import { Card, CardHeader } from "./ui/card";
 import { FileIcon } from "@radix-ui/react-icons";
 import { Tabs } from "@/lib/types";
 import { CgClose } from "react-icons/cg";
 import { SearchBarContext,SearchContextInterface } from "@/lib/SearchContext";
-
 interface TabProps {
   tab: Tabs;
   tabID: string;
@@ -13,12 +14,17 @@ interface TabProps {
   setSearchUrl: (url: string) => void;
   defaultTabStyle: string;
   activeTabStyle: string;
+  webRef:MutableRefObject<WebviewTag| null>
 }
-const TabComponent = ({tab,setTabID,setSideBarSearch,setSearchUrl,tabID,defaultTabStyle,activeTabStyle,}: TabProps) => {
+const TabComponent = ({tab,setTabID,setSideBarSearch,setSearchUrl,tabID,defaultTabStyle,activeTabStyle,webRef}: TabProps) => {
   const {tabObjs,setTabObjs} = useContext(SearchBarContext) as SearchContextInterface;
-  console.log(tab);
+  const {setActiveTab} = useContext(SearchBarContext) as SearchContextInterface
   const handleClose = ()=>{
     setTabObjs((prevTabs)=>prevTabs.filter((tab)=>tab.presentId!==tabID));
+    
+    setSearchUrl("");
+    setSideBarSearch("");
+    webRef.current?.clearHistory();
   }
   return (
     <div
@@ -26,6 +32,7 @@ const TabComponent = ({tab,setTabID,setSideBarSearch,setSearchUrl,tabID,defaultT
         setTabID(tab.presentId);
         setSideBarSearch(tab.url);
         setSearchUrl(tab.url);
+        setActiveTab(tab);
       }}
     >
       <Card
@@ -39,7 +46,7 @@ const TabComponent = ({tab,setTabID,setSideBarSearch,setSearchUrl,tabID,defaultT
           <FileIcon height={20} width={20} />
           <p className="text-base  font-medium">{tab.name}</p>
           </div>
-          <CgClose onClick={handleClose} size={15} className="invisible group-hover:visible"/>
+          <CgClose onClick={()=>{handleClose()}} size={15} className="invisible group-hover:visible"/>
         </CardHeader>
       </Card>
     </div>

@@ -7,7 +7,9 @@ export interface SearchContextInterface {
   setSearchUrl: (url: string) => void,
   webviewRef:MutableRefObject<WebviewTag| null>,
   tabObjs:Tabs[],
-  setTabObjs:React.Dispatch<React.SetStateAction<Tabs[]>>
+  setTabObjs:React.Dispatch<React.SetStateAction<Tabs[]>>,
+  activeTab:Tabs,
+  setActiveTab:React.Dispatch<React.SetStateAction<Tabs>>
 }
 export const SearchBarContext = createContext<SearchContextInterface | null>(
   null
@@ -19,12 +21,15 @@ export const SearchBarProvider = ({children,}: Readonly<{children: React.ReactNo
   const [tabObjs, setTabObjs] = useState<Tabs[]>([
     { name: "browse.me", url: "browse.me", presentId: "" },
   ]);
+  const [activeTab,setActiveTab] =useState(tabObjs[0]);
   const searchValue: SearchContextInterface = {
     searchUrl,
     setSearchUrl,
     webviewRef,
     tabObjs,
-    setTabObjs
+    setTabObjs,
+    activeTab,
+    setActiveTab
   };
   return (
     <SearchBarContext.Provider value={searchValue}>

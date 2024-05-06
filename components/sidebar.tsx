@@ -18,10 +18,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { SearchBarContext, SearchContextInterface } from "@/lib/SearchContext";
 import { validUrl } from "@/lib/validUrl";
 import { santizeUrl } from "@/lib/santizeUrl";
-import {fetchMeta} from '@/lib/fetchMeta';
 import Spotlight from "./spotlight";
 import Arc from "@/public/arc_logo.png";
-import { Tabs } from "@/lib/types";
 import {v4} from 'uuid';
 import TabComponent from "./tabs";
 import { ScrollArea } from "./ui/scroll-area";
@@ -34,9 +32,6 @@ export default function Sidebar() {
 
   const activeTabStyle = "h-[50px] bg-slate-500 border-slate-500";
   const defaultTabStyle = "h-[50px] bg-transparent border-transparent";
-  // const [tabObjs, setTabObjs] = useState<Tabs[]>([
-  //   { name: "browse.me", url: "browse.me", presentId: "" },
-  // ]);
   const [tabID, setTabID] = useState<string>("");
   const addTab = () => {
     // var newTabID = tabID + 1;
@@ -47,6 +42,7 @@ export default function Sidebar() {
     ]);
     setTabID(newTabID);
     setSideBarSearch("browse.me");
+    setSearchUrl("browse.me");
   };
   const modifyTab = () => {
     console.log("modify", searchUrl);
@@ -156,7 +152,7 @@ export default function Sidebar() {
           </div>
             <ScrollArea className="h-[500px]">
             {tabObjs.map((tab) => {
-              
+              console.log("render")
               return ( 
                 <TabComponent 
                   tab={tab} 
@@ -166,6 +162,7 @@ export default function Sidebar() {
                   setSideBarSearch={setSideBarSearch}
                   defaultTabStyle={defaultTabStyle}
                   activeTabStyle={activeTabStyle}
+                  webRef={webviewRef}
                 />
               );
             })}
