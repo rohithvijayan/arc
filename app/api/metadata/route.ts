@@ -11,10 +11,10 @@ interface MetaData {
   favicon?: string;
 }
 export async function POST(request: Request) {
+  const browser = await pupppeteer.launch({ headless: true });
   try {
     const { url } = await request.json();
     console.log("url from api", url);
-    const browser = await pupppeteer.launch({ headless: true });
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: "networkidle0" });
     await page.setViewport({ width: 1080, height: 1024 });
@@ -47,7 +47,6 @@ export async function POST(request: Request) {
       const point = $(el).text().trim();
       if (point) majorPoints.push(point);
     });
-    await browser.close();
     return NextResponse.json({
       message: {
         title: title,
@@ -61,5 +60,7 @@ export async function POST(request: Request) {
   } catch (err) {
     console.error("Error fetching meta data:", err);
     return NextResponse.json({ error: "failed to fetch" });
+  }finally{
+    await browser.close();
   }
 }

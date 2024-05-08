@@ -21,6 +21,7 @@ import { WebDataInterface } from "@/lib/types";
 import { generate } from "@/app/actions";
 import { readStreamableValue } from "ai/rsc";
 import { ScrollArea } from "./ui/scroll-area";
+import Markdown from 'react-markdown';
 export default function Spotlight() {
   const { activeTab, setActiveTab, setSearchUrl } = useContext(
     SearchBarContext
@@ -56,7 +57,11 @@ export default function Spotlight() {
       {discription}  \n 
       {points} \n
       When the reponse is created fill the content inside {} based on the label and remove the brackets
-      Make sure the line is break down to multiple sentences.
+      Return the response in Markdown form.
+      Limit your response no more than 200 characters.
+      While creating response, do not start or end with sentence like Here is the Markdown and reponse is limited to 200 characters 
+      Instead,Just write the summarized content only 
+      Try to limit the with 3 points but make sure to construct complete sentences.
      `;
       console.log(prompt);
       const { output } = await generate(prompt);
@@ -138,7 +143,9 @@ export default function Spotlight() {
                       );
                     })}
                   </div>
+                  <Markdown>
                   {generation}
+                  </Markdown>
                 </div>
               )}
             </ScrollArea>
