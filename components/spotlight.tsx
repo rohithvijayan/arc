@@ -21,7 +21,7 @@ import { WebDataInterface } from "@/lib/types";
 import { generate } from "@/app/actions";
 import { readStreamableValue } from "ai/rsc";
 import { ScrollArea } from "./ui/scroll-area";
-import Markdown from 'react-markdown';
+import Markdown from "react-markdown";
 export default function Spotlight() {
   const { activeTab, setActiveTab, setSearchUrl } = useContext(
     SearchBarContext
@@ -46,22 +46,21 @@ export default function Spotlight() {
     if (response) {
       const prompt = `
       You're an AI assistant which summarizes the website contents \
-      Here is the content of the website :
-      <start/>
+      Here is the JSON data for the website to summarize:
+      <website_data>
       ${response?.message.title}
       ${response?.message.heightLights}
-     </end>
-      Analyse this and create a points :
-      {heading}  \n 
-      {subheading }  \n
-      {discription}  \n 
-      {points} \n
-      When the reponse is created fill the content inside {} based on the label and remove the brackets
-      Return the response in Markdown form.
-      Limit your response no more than 200 characters.
-      While creating response, do not start or end with sentence like Here is the Markdown and reponse is limited to 200 characters 
-      Instead,Just write the summarized content only 
-      Try to limit the with 3 points but make sure to construct complete sentences.
+      </website_data>
+
+      Please carefully review and analyze the provided JSON data. Pay close attention to key elements such as the page title, headings, paragraphs, and any available metadata that gives insight into the website's content and purpose.
+
+      Based on your analysis, write a concise summary of the main content and overall purpose of the website. Provide your summary in markdown format with formatting. Use complete sentences and keep the total summary under 500 characters.
+
+      Next, identify the major points or key topics covered on the website. List out these points in a markdown bullet list format.
+
+      For both the summary and list of major points, focus on extracting and conveying the most essential, high-level information about the website. Be selective and keep your writing clear and concise.
+
+      Please provide the content summary first, followed by the list of major points.
      `;
       console.log(prompt);
       const { output } = await generate(prompt);
@@ -143,9 +142,7 @@ export default function Spotlight() {
                       );
                     })}
                   </div>
-                  <Markdown>
-                  {generation}
-                  </Markdown>
+                  <Markdown>{generation}</Markdown>
                 </div>
               )}
             </ScrollArea>
