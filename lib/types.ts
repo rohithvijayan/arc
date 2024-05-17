@@ -14,3 +14,16 @@ export interface WebDataInterface{
         image:Array<string>
     }
 }
+export interface SearchDataInferface{
+    title:string;
+    summary:string;
+    highLights:Array<string>;
+    imageSet:Array<string>;
+    videoSet?:Array<string>;
+}
+
+export interface MessageInferface {
+    role: 'assistant';
+    content: string;
+    display?: React.ReactNode;
+}

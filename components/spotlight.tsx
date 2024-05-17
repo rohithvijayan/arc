@@ -64,7 +64,6 @@ export default function Spotlight() {
      `;
       console.log(prompt);
       const { output } = await generate(prompt);
-
       for await (const delta of readStreamableValue(output)) {
         setGeneration((currentGeneration) => `${currentGeneration}${delta}`);
       }
@@ -87,7 +86,7 @@ export default function Spotlight() {
   }, []);
   return (
     <Dialog open={spotlight} onOpenChange={setSpotlight}>
-      <DialogContent className="p-3">
+      <DialogContent className="flex flex-col container bg-white/90 backdrop-blur-sm">
         <DialogHeader>
           <Input
             onChange={(event) => {
@@ -109,17 +108,17 @@ export default function Spotlight() {
               }
             }}
             placeholder="Search...."
-            className=""
+            className="bg-white"
           />
         </DialogHeader>
 
-        <Card className="rounded-sm">
-          <CardContent className={`flex flex-col h-full`}>
-            <ScrollArea className={generation === "" ? `h-20` : "h-[500px]"}>
+        <Card className="rounded-sm  bg-white/70 border-none">
+          <CardContent className={`flex flex-col h-full w-full`}>
+            <ScrollArea className={ `${generation === "" ? `h-20` : "h-[500px]"}`}>
               <div className="flex flex-row justify-between items-center gap-4 container mx-auto p-3">
                 <div className="flex flex-col">
                   <h1 className="text-lg font-medium">Summarize with AI</h1>
-                  <p className="text-gray-500">{activeTab.url}</p>
+                  <p className={`text-gray-500 ${activeTab.url.length>30 ? 'w-[300px] truncate overflow-hidden' :'' }`}>{activeTab.url}</p>
                 </div>
                 {activeTab.url !== "browse.me" && (
                   <Button onClick={handleFetchAPI} type="submit">

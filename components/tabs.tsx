@@ -43,8 +43,8 @@ const TabComponent = ({tab,setTabID,setSideBarSearch,setSearchUrl,tabID,defaultT
       >
         <CardHeader className="group rounded-lg flex flex-row justify-between gap-2 p-3 leading-3">
           <div className="flex flex-row justify-evently gap-2">
-          <FileIcon height={20} width={20} />
-          <p className="text-base  font-medium">{tab.name}</p>
+            <FileIcon height={20} width={20} />
+            <p className="text-base font-medium truncate w-40">{tab.name}</p>
           </div>
           <CgClose onClick={()=>{handleClose()}} size={15} className="invisible group-hover:visible"/>
         </CardHeader>
