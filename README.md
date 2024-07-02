@@ -34,3 +34,14 @@ npm run devStart
 ```bash
 npm run dev
 ```
+3.Working Demo
+ 
+![Screenshot_20240702-213703](https://github.com/mellofordev/arc/assets/106431458/03cbcd1c-895c-4e37-aab1-2c80c15c0a47)
+
+![Screenshot_20240702-213721](https://github.com/mellofordev/arc/assets/106431458/a93f2505-ad2c-40ae-a3bf-1fd178ae7e37)
+
+![IMG_20240702_213808](https://github.com/mellofordev/arc/assets/106431458/77247581-f622-49c2-b36e-be2cd6f30750)
+
+![Screenshot_20240702-213742](https://github.com/mellofordev/arc/assets/106431458/4a03d42f-3bcc-4f2a-ae05-fb13cddc5006)
+
+
